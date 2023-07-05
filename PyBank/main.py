@@ -1,15 +1,16 @@
 import csv
+import os 
+csvpath=os.path.join('Resources','budget_data.csv')
 
 # Open the CSV file
-with open("..","Resources","budget_data.csv","r") as file:
+with open(csvpath,"r") as file:
     
-    # Read the CSV file
+
     csv_reader = csv.reader(file)
     
-    # Skip the header row
     header = next(csv_reader)
     
-    # Initialize variables
+    # Set Up Variables 
     total_months = 0
     net_profit_loss = 0
     previous_profit_loss = 0
@@ -46,9 +47,10 @@ with open("..","Resources","budget_data.csv","r") as file:
             max_decrease = [row[0], change]
     
     # Calculate the average change
-    average_change = sum(changes) / len(changes)
+    average_change = sum(changes[1:]) / (total_months-1) 
+
     
-    # Print the results
+    # Print
     print("Financial Analysis")
     print("------------------")
     print(f"Total Months: {total_months}")
@@ -56,3 +58,20 @@ with open("..","Resources","budget_data.csv","r") as file:
     print(f"Average Change: ${average_change:.2f}")
     print(f"Greatest Increase in Profits: {max_increase[0]} (${max_increase[1]})")
     print(f"Greatest Decrease in Profits: {max_decrease[0]} (${max_decrease[1]})")
+
+# Output file
+    output = "Financial Analysis\n"
+    output += "------------------\n"
+    output += f"Total Months: {total_months}\n"
+    output += f"Net Total Amount: ${net_profit_loss}\n"
+    output += f"Average Change: ${average_change:.2f}\n"
+    output += f"Greatest Increase in Profits: {max_increase[0]} (${max_increase[1]})\n"
+    output += f"Greatest Decrease in Profits: {max_decrease[0]} (${max_decrease[1]})\n"
+
+
+    output_file = os.path.join("analysis","financial_analysis.text")
+
+    with open(output_file, "w") as f:
+        f.write(output)
+
+    print(f'Financial analysis has been experted to{output_file} successfully')
